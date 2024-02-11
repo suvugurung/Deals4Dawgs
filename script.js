@@ -4,13 +4,15 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function sendMessage() {
-    const username = document.getElementById("username").value;
-    const messageText = document.getElementById("message").value;
+    const details = document.getElementById("details").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
 
-    if (username && messageText) {
+    if (details && date && time) {
         const message = {
-            username: username,
-            messageText: messageText
+            details: details,
+            date: date,
+            time: time
         };
 
         // Save the message to local storage
@@ -20,10 +22,11 @@ function sendMessage() {
         displayMessage(message);
 
         // Clear the form fields after sending a message
-        document.getElementById("username").value = "";
-        document.getElementById("message").value = "";
+        document.getElementById("details").value = "";
+        document.getElementById("date").value = "";
+        document.getElementById("time").value = "";
     } else {
-        alert("Please fill in both username and message.");
+        alert("Please fill in all fields.");
     }
 }
 
@@ -53,7 +56,11 @@ function displayMessage(message) {
     messageDiv.classList.add("message");
 
     const messageContent = document.createElement("p");
-    messageContent.innerHTML = `<span>${message.username}:</span> ${message.messageText}`;
+    messageContent.innerHTML = `
+        <span>Details:</span> ${message.details}<br>
+        <span>Date:</span> ${message.date}<br>
+        <span>Time:</span> ${message.time}
+    `;
 
     messageDiv.appendChild(messageContent);
     messagesContainer.appendChild(messageDiv);
