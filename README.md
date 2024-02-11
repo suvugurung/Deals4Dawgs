@@ -9,6 +9,6 @@ W3Schools
 
 Glitch
 
-##Challanges we overcame
+## Challenges we overcame
 One of the main challenges we faced was learning how to code and build a website from scratch. It was something that neither of us was familiar with, so there was a steep learning curve involved in the process. That was our biggest challenge that we overcame. 
 
