@@ -1,56 +1,75 @@
+CREATE DATABASE IF NOT EXISTS forum;
+USE forum;
+
+CREATE TABLE IF NOT EXISTS posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Food & Events in Athens, GA</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Simple Forum</title>
+    <style>
+        /* ... (same as before) ... */
+    </style>
 </head>
 <body>
-    <!-- Header Section -->
+
     <header>
-        <div class="container">
-            <h1>Free Food & Events in Athens, GA</h1>
-            <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#events">Events</a></li>
-                    <li><a href="#about">About</a></li>
-                  <a href="https://maps.app.goo.gl/k9egs3yqNrD1oej28">
-                    <button>Freebie Map😋!</button>  <!--Button-->
-                  <a>
-                </ul>
-            </nav>
-        </div>
+        <h1>Simple Forum</h1>
     </header>
 
-    <!-- Main Content Section -->
-    <main>
-        <!-- Events Section -->
-        <section id="events">
-            <div class="container">
-                <h2>Upcoming Events</h2>
-                <!-- Event listings will go here -->
-            </div>
-        </section>
+    <section>
+        <?php
+        // Display existing forum posts
+        $servername = "your_database_server";
+        $username = "your_database_username";
+        $password = "your_database_password";
+        $dbname = "forum";
 
-        <!-- About Section -->
-        <section id="about">
-            <div class="container">
-                <h2>About Us</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-        </section>
-    </main>
+        $conn = new mysqli($servername, $username, $password, $dbname);
 
-    <!-- Footer Section -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Free Food & Events in Athens, GA</p>
-        </div>
-    </footer>
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
 
-    <script src="script.js"></script>
+        $sql = "SELECT * FROM posts ORDER BY created_at DESC";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo '<div class="forum-post">';
+                echo '<h2>' . htmlspecialchars($row["title"]) . '</h2>';
+                echo '<p>Posted by: ' . htmlspecialchars($row["author"]) . '</p>';
+                echo '<p>' . nl2br(htmlspecialchars($row["content"])) . '</p>';
+                echo '</div>';
+            }
+        } else {
+            echo '<p>No posts yet.</p>';
+        }
+
+        $conn->close();
+        ?>
+    </section>
+
+    <section>
+        <h2>Create a New Post</h2>
+        <form action="submit_post.php" method="post">
+            <label for="postTitle">Title:</label>
+            <input type="text" id="postTitle" name="postTitle" required>
+
+            <label for="postContent">Content:</label>
+            <textarea id="postContent" name="postContent" rows="4" required></textarea>
+
+            <button type="submit">Post</button>
+        </form>
+    </section>
+
 </body>
 </html>
-
