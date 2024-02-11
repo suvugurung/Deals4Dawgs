@@ -7,13 +7,48 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
 <style>
-body {font-family: "Karma", sans-serif}
+  body {font-family: "Karma", sans-serif}
   
 </style>
       <link rel="stylesheet" href="style.css">
   
 </head>
 <body>
+  <style>
+        body {
+            font-family: Karma, sans-serif;
+            font-weight: bold;
+            margin: 20px;
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+        }
+        input {
+            margin-bottom: 10px;
+        }
+        .event-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .event {
+            flex: 0 0 48%; /* Set the width of the event container */
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+    </style>
     <script src="script.js"></script>
   <!-- Sidebar (hidden by default) -->
 <nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:2;width:40%;min-width:300px" id="mySidebar">
@@ -28,8 +63,7 @@ body {font-family: "Karma", sans-serif}
   <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto">
     <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
     <style> <body style="background-color:beige;"> </style>
-    <div class="w3-center w3-padding-16">Deals for Dawgs!</div>
-    </style>
+<h1 style=";">A Blue Heading</h1>
   </div>
 </div>
   
@@ -37,40 +71,39 @@ body {font-family: "Karma", sans-serif}
 <div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
           <div class="container">
         <div id="messages"></div>
-        <form id="messageForm">
-             <label for="eventName">Event Name:</label>
+         <form id="eventForm">
+        <label for="eventName">Event Name:</label>
         <input type="text" id="eventName" required>
         
         <label for="eventDate">Event Date:</label>
-        <input type="date" id="eventDate" required>
+        <input type="text" id="eventDate" pattern="\d{2}/\d{2}/\d{4}" placeholder="MM/DD/YYYY" required>
         
         <label for="eventTime">Event Time:</label>
-        <input type="time" id="eventTime" required>
+        <input type="text" id="eventTime" pattern="\d{2}:\d{2} [APap][Mm]" placeholder=" - - : - - AM/PM" required>
         
-        <label for="eventImage">Event Image (optional):</label>
-        <input type="file" id="eventImage" accept="image/png, image/jpeg">
+        <label for="eventImages">Event Images (optional):</label>
+        <input type="file" id="eventImages" accept="image/png, image/jpeg" multiple>
         
         <button type="button" onclick="addEvent()">Add Event</button>
-        </form>
-            <div class="event-container" id="eventContainer">
+    </form>
+             <div class="event-container" id="eventContainer">
         <!-- Events will be displayed here -->
     </div>
+</div>
   
   <!-- Footer -->
   <footer class="w3-row-padding w3-padding-32">
-
-    </div>
-  </footer>
+</footer>
 
 <!-- End page content -->
 </div>
 
-<script>
-  function addEvent() {
+ <script>
+        function addEvent() {
             const eventName = document.getElementById('eventName').value;
             const eventDate = document.getElementById('eventDate').value;
             const eventTime = document.getElementById('eventTime').value;
-            const eventImage = document.getElementById('eventImage').files[0];
+            const eventImages = document.getElementById('eventImages').files;
 
             const eventContainer = document.getElementById('eventContainer');
 
@@ -82,30 +115,77 @@ body {font-family: "Karma", sans-serif}
 
             eventDiv.appendChild(eventDetails);
 
-            if (eventImage) {
+            for (let i = 0; i < Math.min(eventImages.length, 3); i++) {
                 const img = document.createElement('img');
-                img.src = URL.createObjectURL(eventImage);
+                img.src = URL.createObjectURL(eventImages[i]);
                 eventDiv.appendChild(img);
             }
 
-            eventContainer.insertBefore(eventDiv, eventContainer.firstChild);
+            // Save user input to localStorage
+            saveToLocalStorage(eventName, eventDate, eventTime);
+
+            // Insert the new event at the correct position in chronological order
+            insertInChronologicalOrder(eventDiv);
 
             // Clear form inputs
             document.getElementById('eventName').value = '';
             document.getElementById('eventDate').value = '';
             document.getElementById('eventTime').value = '';
-            document.getElementById('eventImage').value = '';
+            document.getElementById('eventImages').value = '';
         }
-  
-// Script to open and close sidebar
-function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
-}
- 
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
-}
-</script>
+
+        function saveToLocalStorage(name, date, time) {
+            const events = JSON.parse(localStorage.getItem('events')) || [];
+            events.push({ name, date, time });
+            localStorage.setItem('events', JSON.stringify(events));
+        }
+
+        function loadFromLocalStorage() {
+            const events = JSON.parse(localStorage.getItem('events')) || [];
+            const eventContainer = document.getElementById('eventContainer');
+
+            // Sort events by date and time
+            events.sort((a, b) => {
+                const dateA = new Date(`${a.date} ${a.time}`);
+                const dateB = new Date(`${b.date} ${b.time}`);
+                return dateA - dateB;
+            });
+
+            events.forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.className = 'event';
+
+                const eventDetails = document.createElement('p');
+                eventDetails.innerHTML = `<strong>${event.name}</strong><br>Date: ${event.date}<br>Time: ${event.time}`;
+                eventDiv.appendChild(eventDetails);
+
+                eventContainer.appendChild(eventDiv);
+            });
+        }
+
+        function insertInChronologicalOrder(newEventDiv) {
+            const eventContainer = document.getElementById('eventContainer');
+            const events = eventContainer.getElementsByClassName('event');
+
+            for (let i = events.length - 1; i >= 0; i--) {
+                const event = events[i];
+                const date = event.getElementsByTagName('strong')[0].innerText;
+                const newDate = newEventDiv.getElementsByTagName('strong')[0].innerText;
+
+                if (new Date(date) <= new Date(newDate)) {
+                    // Insert the new event before the current event
+                    eventContainer.insertBefore(newEventDiv, event.nextSibling);
+                    return;
+                }
+            }
+
+            // If no existing events or the new event is the earliest, append it at the beginning
+            eventContainer.insertBefore(newEventDiv, eventContainer.firstChild);
+        }
+
+        // Load existing events from localStorage on page load
+        window.onload = loadFromLocalStorage;
+    </script>
 
 </body>
 </html>
