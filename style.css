@@ -1,13 +1,13 @@
-body {background-color: red;
+body {
     font-family: Arial, sans-serif;
-    background-color: #ff0000;
+    background-color: #f4f4f4;
     margin: 0;
 }
 
 .container {
     max-width: 600px;
     margin: 20px auto;
-    background-color: #ff0000; /* Change to red (#ff0000) */
+    background-color: #fff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
