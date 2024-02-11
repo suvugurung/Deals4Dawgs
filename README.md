@@ -6,6 +6,7 @@ We were inspired to create this project because we like collecting freebies and 
 
 ## Tools we used
 W3Schools
+
 Glitch
 
 ##Challanges we overcame
