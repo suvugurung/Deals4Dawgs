@@ -39,17 +39,23 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
           <div class="container">
         <div id="messages"></div>
         <form id="messageForm">
-            <label for="details">Freebie Details:</label>
-            <input type="text" id="details" required>
-
-            <label for="date">Date:</label>
-            <input type="date" id="date" required>
-
-            <label for="time">Time:</label>
-            <input type="time" id="time" required>
-
-            <button type="button" onclick="sendMessage()">Send Message</button>
+             <label for="eventName">Event Name:</label>
+        <input type="text" id="eventName" required>
+        
+        <label for="eventDate">Event Date:</label>
+        <input type="date" id="eventDate" required>
+        
+        <label for="eventTime">Event Time:</label>
+        <input type="time" id="eventTime" required>
+        
+        <label for="eventImage">Event Image (optional):</label>
+        <input type="file" id="eventImage" accept="image/png, image/jpeg">
+        
+        <button type="button" onclick="addEvent()">Add Event</button>
         </form>
+            <div class="event-container" id="eventContainer">
+        <!-- Events will be displayed here -->
+    </div>
   <!-- First Photo Grid-->
   <div class="w3-row-padding w3-padding-16 w3-center" id="food">
     <div class="w3-quarter">
@@ -135,6 +141,37 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 </div>
 
 <script>
+  function addEvent() {
+            const eventName = document.getElementById('eventName').value;
+            const eventDate = document.getElementById('eventDate').value;
+            const eventTime = document.getElementById('eventTime').value;
+            const eventImage = document.getElementById('eventImage').files[0];
+
+            const eventContainer = document.getElementById('eventContainer');
+
+            const eventDiv = document.createElement('div');
+            eventDiv.className = 'event';
+
+            const eventDetails = document.createElement('p');
+            eventDetails.innerHTML = `<strong>${eventName}</strong><br>Date: ${eventDate}<br>Time: ${eventTime}`;
+
+            eventDiv.appendChild(eventDetails);
+
+            if (eventImage) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(eventImage);
+                eventDiv.appendChild(img);
+            }
+
+            eventContainer.insertBefore(eventDiv, eventContainer.firstChild);
+
+            // Clear form inputs
+            document.getElementById('eventName').value = '';
+            document.getElementById('eventDate').value = '';
+            document.getElementById('eventTime').value = '';
+            document.getElementById('eventImage').value = '';
+        }
+  
 // Script to open and close sidebar
 function w3_open() {
   document.getElementById("mySidebar").style.display = "block";
