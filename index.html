@@ -21,3 +21,32 @@
     <script src="script.js"></script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Example</title>
+    <script>
+        function showNotification() {
+            if (Notification.permission === "granted") {
+                const notification = new Notification("Custom Notification", {
+                    body: "Hello, this is a custom notification!"
+                });
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        const notification = new Notification("Custom Notification", {
+                            body: "Hello, this is a custom notification!"
+                        });
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <button onclick="showNotification()">Show Custom Notification</button>
+</body>
+</html>
+
