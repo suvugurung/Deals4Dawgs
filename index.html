@@ -1,52 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UGA Freebies!</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Athens Freebies!</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="container">
-        <h1>UGA Freebies!</h1>
-        <div id="messages"></div>
-        <form id="messageForm">
-            <label for="username">Username:</label>
-            <input type="text" id="username" required>
-            <label for="message">Message:</label>
-            <textarea id="message" rows="4" required></textarea>
-            <button type="button" onclick="sendMessage()">Send Message</button>
-        </form>
+      <h1>Athens Freebies!</h1>
+      <div id="messages"></div>
+      <form id="messageForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required />
+
+        <label for="message">Message:</label>
+        <textarea id="message" rows="4" required></textarea>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" required />
+
+        <label for="time">Time:</label>
+        <input type="time" id="time" required />
+
+        <button type="button" onclick="sendMessage()">Send Message</button>
+      </form>
     </div>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notification Example</title>
-    <script>
-        function showNotification() {
-            if (Notification.permission === "granted") {
-                const notification = new Notification("Custom Notification", {
-                    body: "Hello, this is a custom notification!"
-                });
-            } else if (Notification.permission !== "denied") {
-                Notification.requestPermission().then(permission => {
-                    if (permission === "granted") {
-                        const notification = new Notification("Custom Notification", {
-                            body: "Hello, this is a custom notification!"
-                        });
-                    }
-                });
-            }
-        }
-    </script>
-</head>
-<body>
-    <button onclick="showNotification()">Show Custom Notification</button>
-</body>
-</html>
-
