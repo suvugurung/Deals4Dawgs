@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: beige;
+    background-color: #FEF1F1;
     margin: 0;
 }
 
@@ -15,15 +15,6 @@ body {
     margin-top: 20px;
 }
 
-.message {
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
-}
-
-.message span {
-    font-weight: bold;
-    color: #333;
-}
 
 form {
     margin-top: 20px;
